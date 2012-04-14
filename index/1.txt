@@ -1,0 +1,1 @@
+SELECT * FROM user_info WHERE register_time>='2012-04-10 00:00:00'  AND register_time<'2012-04-11 00:00:00' 
