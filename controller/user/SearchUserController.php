@@ -27,13 +27,15 @@ class SearchUserController extends Controller
 		else //查找和此用户相关的游戏信息
 		{
 			$game_module = new GameModule();
-			$user_games = $game_module->searchGameByUserid($user_info->getUser_id());
+			$game_info = $game_module->searchGameByUserid($user_info->getUser_id());
 			$jsonResult->message = strval($user_info->getUser_id());
 		    $jsonResult->data = array(
 		    	'score' => $user_info->getUser_score(),
+		    	'gameinfo' => $game_info,
 		    );	
 		}
 		echo json_encode($jsonResult);
+		
 		
 	}
 }

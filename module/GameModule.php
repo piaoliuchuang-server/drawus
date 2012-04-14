@@ -83,14 +83,71 @@ class GameModule
 	/**
 	 * 根据user_id取用户游戏信息
 	 * 
+	 * @param $user_id
+	 * @return Json
 	 */
 	function searchGameByUserid($user_id)
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('user_id',$user_id));
 		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
-		$games = $this->game_user_infoDAO->load($criteria);
-		//echo $games->getGame_id();
+		$sql=new SQL("game_user_info");
+		$sql->criteria=$criteria;
+		$sql->select();
+		$dao = new DAO();
+		$rs = $dao->query($sql);
+		$num_rs = $dao->exist($rs);
+		if($num_rs)
+		{
+			$gameinfo = array();
+			for($i=0; $i < $num_rs; $i++)
+			{
+				$row = @mysql_fetch_assoc($rs);
+				//根据game_id查找游戏玩家信息(game_user_info)
+				$gu_rs = $this->searchGameByGameid($row['game_id']);
+				$partner = array();
+				while(false !== ($gu_row=@mysql_fetch_assoc($gu_rs)))
+				{
+					if($gu_row['user_id'] != $user_id)
+					{
+						$partner[] = array(
+							'partner_id' => stripcslashes($gu_row['user_id']),
+							'position' => stripcslashes($gu_row['position']),
+						);
+					}
+				}
+				
+				$gameinfo[] = array(
+					'game_id' => stripcslashes($row['game_id']),
+					'position' => stripcslashes($row['position']),
+					'partner' => $partner,
+				);
+			}
+			return $gameinfo;
+		}
+		else
+		{
+			return "";
+		}
+
+	}
+	
+	/**
+	 * 根据game_id查找游戏玩家信息
+	 * 
+	 * @param $game_id
+	 * @return $rs;
+	 */
+	function searchGameByGameid($game_id)
+	{
+		$criteria = new Criteria();
+		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
+		$sql=new SQL("game_user_info");
+		$sql->criteria=$criteria;
+		$sql->select();
+		$dao = new DAO();
+		$rs = $dao->query($sql);
+		return $rs;
 	}
 	
 	private function _log_error()
