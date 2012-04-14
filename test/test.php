@@ -8,7 +8,8 @@
 <body>
 	<h1>数据库连接测试页面</h1>
 	<h5><span style="color:#F03">====根据uuid查找用户信息=====</span></h5>
-	<form action="../index/index.php?do=user_search" method="post">
+	<form action="../index/index.php?" method="get">
+	<input type="hidden" name="do" value="user_search">
 		客户端标识：<input name="uuid" type="text" size="40"/>
 		<br/>
 		<input type="submit" name="submit" value="Search">

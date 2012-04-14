@@ -62,7 +62,7 @@ class GameModule
 	{
 		if(count($players) == 2)
 		{
-			$sql = 'select * from game_user_info as t1 where (t1.user_id = \''.$players[0].'\' or t1.user_id = \''.$players[1].'\') and exists (select 1 from game_user_info as t2 where (t2.user_id = \''.$players[0].'\' or t2.user_id = \''.$players[1].'\') and t1.user_id != t2.user_id and t1.game_id = t2.game_id)';
+			$sql = 'select * from game_user_info as t1 where (t1.user_id = \''.$players[0].'\' or t1.user_id = \''.$players[1].'\') and exists (select 1 from game_user_info as t2 where (t2.user_id = \''.$players[0].'\' or t2.user_id = \''.$players[1].'\') and t1.user_id != t2.user_id and t1.game_id = t2.game_id and t1.position <> \''.Game_Params::LEFT.'\' and t2.position <> \''.Game_Params::LEFT.'\')';
 			$dao = new DAO();
 			$rs = $dao->query($sql);
 		}
@@ -88,10 +88,9 @@ class GameModule
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('user_id',$user_id));
+		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
 		$games = $this->game_user_infoDAO->load($criteria);
-		echo $this->game_user_infoDAO->ls($games);
-		$infos = $this->game_user_infoDAO->ls($criteria);
-		echo $infos[0];
+		//echo $games->getGame_id();
 	}
 	
 	private function _log_error()

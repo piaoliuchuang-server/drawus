@@ -15,7 +15,7 @@ class SearchUserController extends Controller
 		header("Cache-Control: no-cache");
 		$jsonResult = new Http_handle_result();
 		
-		$uuid = $_POST[User_post_Params::UUID];
+		$uuid = $_GET[User_post_Params::UUID];
 		$user_module = new UserModule();
 		$user_info = $user_module->getUserInfoByUuid($uuid);
 

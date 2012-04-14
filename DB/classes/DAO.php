@@ -38,7 +38,7 @@ class DAO {
 	function query($sql) {
 	   
 		//Log::Error("sql",$sql);
-  	echo $sql. '<br/>';
+  	//echo $sql. '<br/>';
 	//file_put_contents("1.txt",$sql."\n");
 		global $page;
 		if(isset($page)) $page ->query+=1;
