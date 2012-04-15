@@ -112,7 +112,7 @@ class GameModule
 					{
 						$partner[] = array(
 							'partner_id' => stripcslashes($gu_row['user_id']),
-							'position' => stripcslashes($gu_row['position']),
+							'partner_position' => stripcslashes($gu_row['position']),
 						);
 					}
 				}

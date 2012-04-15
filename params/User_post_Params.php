@@ -34,11 +34,6 @@ class User_post_Params
 	 * 寻找游戏玩家的id 
 	 */
 	const GAME_PARTNER = 'game_partner';
-	
-	/**
-	 * 此客户端第一次玩游戏，请创建新用户
-	 */
-	const GAME_FIRST_TIME = 'creat_new_username';	
 }
 
 ?>

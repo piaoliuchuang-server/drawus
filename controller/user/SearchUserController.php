@@ -21,7 +21,7 @@ class SearchUserController extends Controller
 
 		if(empty($user_info))//如果客户端第一次玩游戏，则提示创建新用户名
 		{
-			$jsonResult->message = strval(User_post_Params::GAME_FIRST_TIME);
+			$jsonResult->message = strval(Game_result_Params::GAME_FIRST_TIME);
 			$jsonResult->data = "";
 		}
 		else //查找和此用户相关的游戏信息

@@ -1,0 +1,16 @@
+程序配置说明
+1.将表导入数据库
+位置：sql文件夹下有sql备份
+
+2.连接数据库用户名和密码
+位置：config/common.inc.php
+修改：DB_HOST，数据库服务器地址
+	  DB_USER，数据库用户名
+	  DB_PASS，数据库密码
+	  
+3.业务参数配置说明
+位置：config/common.inc.php
+说明：NEW_USER_SCORE  给用户的初始分数
+      NEW_USER_MAX_DAILY 每天注册用户的上限
+
+

@@ -14,21 +14,28 @@ class NewGameController extends Controller
 		$founder_id = $_POST[User_post_Params::GAME_FOUNDER];
 		$partner_id = $_POST[User_post_Params::GAME_PARTNER];
 		$user_module = new UserModule();
+		
+		//本机游戏创建者ID不能为空
+		if (empty($founder_id) && $founder_id != '0')
+		{
+			$this->_addErrorCode(Game_result_Params::EMPTY_FOUNDER);
+		}
+		//寻找游戏玩家的ID不能为空
+		if (empty($partner_id) && $partner_id != '0')
+		{
+			$this->_addErrorCode(Game_result_Params::EMPTY_PARTNER);
+		}
 		//不能和自己进行游戏
 		if($founder_id == $partner_id)
 		{
-			$this->_addErrorCode(Game_Params::CANT_PLAY_WITH_YOURSELF);
-			$this->AddUserResultHandle(false);
-			return false;
+			$this->_addErrorCode(Game_result_Params::CANT_PLAY_WITH_YOURSELF);
 		}
 		
 		//取游戏玩家的信息
 		$partner = $user_module -> getUserInfoByUserId($partner_id);
 		if(is_null($partner))
 		{
-			$this->_addErrorCode(User_error_Params::PLAYER_NOT_EXIST);
-			$this->AddUserResultHandle(false);
-			return false;	
+			$this->_addErrorCode(User_error_Params::PLAYER_NOT_EXIST);	
 		}
 		
 		$game_module = new GameModule();
@@ -37,7 +44,10 @@ class NewGameController extends Controller
 		$doing_game_id = $game_module -> searchGameByPlayers($players);
 		if(!is_null($doing_game_id))
 		{
-			$this->_addErrorCode(Game_Params::ALREADY_HAVE_ACTIVE_GAME);
+			$this->_addErrorCode(Game_result_Params::ALREADY_HAVE_ACTIVE_GAME);
+		}
+		
+		if ($this->_existError()){
 			$this->AddUserResultHandle(false);
 			return false;
 		}
@@ -73,7 +83,7 @@ class NewGameController extends Controller
 		}
 		else 
 		{
-			$jsonResult->message = strval(Game_Params::CREAT_GAME_SUCCESS);
+			$jsonResult->message = strval(Game_result_Params::CREAT_GAME_SUCCESS);
 			$jsonResult->data = '';
 		}
 		echo json_encode($jsonResult);

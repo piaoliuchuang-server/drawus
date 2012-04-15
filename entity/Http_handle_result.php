@@ -10,7 +10,7 @@ class Http_handle_result
 {
 	/**
 	 * 错误代码，多个错误代码用逗号隔开
-	 * 错误代码的定义因业务类型而异，在params/业务_error_code.php中定义
+	 * 错误代码的定义因业务类型而异，在params/业务_error_Params.php中定义
 	 * 
 	 * @var mixed
 	 */
@@ -18,7 +18,7 @@ class Http_handle_result
 	
 	/**
 	 * 结果
-	 * 结果的定义因业务类型而异，在entiry/业务_order_result_data.php中定义
+	 * 结果的定义因业务类型而异，在entiry/业务_result_Params.php中定义
 	 * 
 	 * @var mixed
 	 */

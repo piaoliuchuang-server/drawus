@@ -7,7 +7,7 @@
 class User_error_Params
 {
 	/**
-	 * 没有错误
+	 * 没有错误,创建用户成功
 	 */
 	const SUCESS = 'sucess';
 	
@@ -42,7 +42,7 @@ class User_error_Params
 	const ADD_USER_FAILED = 'add_user_failed';
 	
 	/**
-	 * 获取用户信息失败
+	 * 获取用户信息失败---暂时没用上
 	 */
 	const GET_USER_FAILED = 'get_user_failed';
 	
