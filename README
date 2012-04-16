@@ -12,5 +12,8 @@
 位置：config/common.inc.php
 说明：NEW_USER_SCORE  给用户的初始分数
       NEW_USER_MAX_DAILY 每天注册用户的上限
+      
+4.请求的url
+http://localhost/drawus/interface/index.php?do=***
 
 

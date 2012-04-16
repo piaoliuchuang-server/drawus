@@ -35,5 +35,16 @@ class Game_result_Params
 	 * 此客户端第一次玩游戏，请创建新用户
 	 */
 	const GAME_FIRST_TIME = 'creat_new_username';	
+	
+	/**
+	 * 结束游戏信息失败
+	 */
+	const GAME_FINISH_FAIL = 'fail';
+	
+	/**
+	 * 更新游戏状态成功
+	 */
+	const GAME_FINISH_SUCCESS = 'success';
+	
 }
 ?>

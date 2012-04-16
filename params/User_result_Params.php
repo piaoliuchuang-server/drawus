@@ -4,7 +4,7 @@
  * 
  * @author fangxin
  */
-class User_error_Params
+class User_result_Params
 {
 	/**
 	 * 没有错误,创建用户成功

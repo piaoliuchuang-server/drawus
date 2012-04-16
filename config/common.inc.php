@@ -36,8 +36,6 @@ define('DEFAULT_DO', 'mysql_search');
 //是否为正式部署，是为TRUE,否为FALSE   
 //===注：为TRUE时，error_reporting()将会失效===
 define('IS_RELEASE', FALSE);
-//换行�
-define('NEW_LINE', "\n");
 
 
 /*

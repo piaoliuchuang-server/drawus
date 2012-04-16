@@ -20,41 +20,41 @@ class AddUserController extends Controller
 		$new_user_count = $user_module->getUserCountByTime($starttime, $endtime);
 		if($new_user_count > NEW_USER_MAX_DAILY)
 		{
-			$this->_addErrorCode(User_error_Params::HAS_REACHED_MAX);
+			$this->_addErrorCode(User_result_Params::HAS_REACHED_MAX);
 			$this->AddUserResultHandle(false);
 			return false;
 		}
 		
 		//用户名非空验证和格式验证
-		$user_id = $_POST[User_post_Params::USER_ID];
-		$password = $_POST[User_post_Params::USER_PWD];
-		$uuid = $_POST[User_post_Params::UUID];
-		$token = $_POST[User_post_Params::TOKEN];
+		$user_id = $_POST[User_http_Params::USER_ID];
+		$password = $_POST[User_http_Params::USER_PWD];
+		$uuid = $_POST[User_http_Params::UUID];
+		$token = $_POST[User_http_Params::TOKEN];
 
 		if (empty($user_id) && $user_id != '0')
 		{
-			$this->_addErrorCode(User_error_Params::EMPTY_USER_ID);
+			$this->_addErrorCode(User_result_Params::EMPTY_USER_ID);
 		}
 		else if (strlen($user_id) < 4 || strlen($user_id) > 16) 
 		{
-			$this->_addErrorCode(User_error_Params::ILLEGAL_WORD);
+			$this->_addErrorCode(User_result_Params::ILLEGAL_WORD);
 		}
 		else if(empty($uuid))
 		{
-			$this->_addErrorCode(User_error_Params::EMPTY_UUID);
+			$this->_addErrorCode(User_result_Params::EMPTY_UUID);
 		}
 		else
 		{
 			//查看是否含有空格
 			$str_id = explode(" ", $user_id);
-			if(count($str_id)!=1) $this->_addErrorCode(User_error_Params::ILLEGAL_WORD);
+			if(count($str_id)!=1) $this->_addErrorCode(User_result_Params::ILLEGAL_WORD);
 		}
 		
 		//密码可为空，若不为空，则进行格式验证
 		if (!(empty($password) && $password != '0')) 
 		{
 			$str_pwd = explode(" ", $password);
-			if (strlen($password) < 4 || strlen($password) > 16 || count($str_pwd)!=1) $this->_addErrorCode(User_error_Params::ILLEGAL_WORD);
+			if (strlen($password) < 4 || strlen($password) > 16 || count($str_pwd)!=1) $this->_addErrorCode(User_result_Params::ILLEGAL_WORD);
 		}
 		
 		if ($this->_existError()){
@@ -71,11 +71,11 @@ class AddUserController extends Controller
 			//如果已经存在此用户，则返回json提示
 			if(mysql_error() != '' && strstr(mysql_error(),'Duplicate entry') != false && strstr(mysql_error(),'for key \'PRIMARY\'') != false)
 			{
-				$this->_addErrorCode(User_error_Params::EXIST_USER_ID);
+				$this->_addErrorCode(User_result_Params::EXIST_USER_ID);
 			}
 			else
 			{
-				$this->_addErrorCode(User_error_Params::ADD_USER_FAILED);
+				$this->_addErrorCode(User_result_Params::ADD_USER_FAILED);
 			}
 			if ($this->_existError()) 
 			{
@@ -109,7 +109,7 @@ class AddUserController extends Controller
 		}
 		else 
 		{
-			$jsonResult->message = strval(User_error_Params::SUCESS);
+			$jsonResult->message = strval(User_result_Params::SUCESS);
 			$jsonResult->data = '';
 		}
 		echo json_encode($jsonResult);

@@ -104,7 +104,7 @@ class GameModule
 			{
 				$row = @mysql_fetch_assoc($rs);
 				//根据game_id查找游戏玩家信息(game_user_info)
-				$gu_rs = $this->searchGameByGameid($row['game_id']);
+				$gu_rs = $this->searchGameUserByGameid($row['game_id']);
 				$partner = array();
 				while(false !== ($gu_row=@mysql_fetch_assoc($gu_rs)))
 				{
@@ -133,21 +133,84 @@ class GameModule
 	}
 	
 	/**
-	 * 根据game_id查找游戏玩家信息
+	 * 把game_user_info表中的游戏玩家信息position状态改为left
+	 * 
+	 * @param $game_id
+	 * @param $user_id
+	 */
+	function updateGameUserInfo($game_id, $user_id)
+	{
+		$criteria = new Criteria();
+		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
+		$criteria->addRestrictions(Restrictions::eq('user_id',$user_id));
+		$game_user = $this->game_user_infoDAO->load($criteria);
+		if(is_null($game_user)) //没有查询到游戏信息，返回false
+		{
+			return false;
+		}
+		//更新game_user_info表对应的position为left
+		$game_user->setPosition(Game_Params::LEFT);
+		$sql=new SQL("game_user_info");
+		$dao = new DAO();
+		$sql->criteria=$criteria;
+		$sql->add("position",$game_user->getPosition());
+		$sql->update();
+		return $dao->query($sql);	
+	}
+	
+	/**
+	 * 在game_info表中插入对应game_id的游戏结束时间
+	 */
+	function updateGameEndtime($game_id)
+	{
+		$criteria = new Criteria();
+		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
+		$game = $this->game_infoDAO->load($criteria);
+		if(is_null($game))//没有查到游戏信息，返回false
+		{
+			return false;
+		}
+		//更新game_info表的游戏结束时间
+		$game->setGame_endtime(Utility::now());
+		return $this->game_infoDAO->update($game);	
+	}
+	
+	/**
+	 * 根据game_id查找正在玩游戏的玩家信息
 	 * 
 	 * @param $game_id
 	 * @return $rs;
 	 */
-	function searchGameByGameid($game_id)
+	function searchGameUserByGameid($game_id)
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
+		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
 		$sql=new SQL("game_user_info");
 		$sql->criteria=$criteria;
 		$sql->select();
 		$dao = new DAO();
 		$rs = $dao->query($sql);
 		return $rs;
+	}
+	
+	/**
+	 * 根据game_id，得到正在玩游戏的游戏玩家总数
+	 * 
+	 * @param $game_id 
+	 */
+	function getUserCountByGameId($game_id)
+	{
+		$criteria = new Criteria();
+		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
+		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
+		$sql = new SQL('game_user_info');
+		$sql->criteria = $criteria;
+		$sql->select();
+		$user_count = DAO::getCount($sql);
+		if(!$user_count)
+	    	return false;
+	    return $user_count;
 	}
 	
 	private function _log_error()

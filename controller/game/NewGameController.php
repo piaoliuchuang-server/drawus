@@ -11,8 +11,8 @@ class NewGameController extends Controller
 	
 	function run()
 	{
-		$founder_id = $_POST[User_post_Params::GAME_FOUNDER];
-		$partner_id = $_POST[User_post_Params::GAME_PARTNER];
+		$founder_id = $_POST[Game_http_Params::GAME_FOUNDER];
+		$partner_id = $_POST[Game_http_Params::GAME_PARTNER];
 		$user_module = new UserModule();
 		
 		//本机游戏创建者ID不能为空
@@ -35,7 +35,7 @@ class NewGameController extends Controller
 		$partner = $user_module -> getUserInfoByUserId($partner_id);
 		if(is_null($partner))
 		{
-			$this->_addErrorCode(User_error_Params::PLAYER_NOT_EXIST);	
+			$this->_addErrorCode(User_result_Params::PLAYER_NOT_EXIST);	
 		}
 		
 		$game_module = new GameModule();
