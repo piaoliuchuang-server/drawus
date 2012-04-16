@@ -146,7 +146,11 @@ class GameModule
 		$game_user = $this->game_user_infoDAO->load($criteria);
 		if(is_null($game_user)) //没有查询到游戏信息，返回false
 		{
-			return false;
+			return Game_result_Params::GAME_USER_NOT_EXIST;
+		}
+		else if($game_user->getPosition() == Game_Params::LEFT)
+		{
+			return Game_result_Params::PLAYER_HAS_LEFT;
 		}
 		//更新game_user_info表对应的position为left
 		$game_user->setPosition(Game_Params::LEFT);
@@ -155,7 +159,13 @@ class GameModule
 		$sql->criteria=$criteria;
 		$sql->add("position",$game_user->getPosition());
 		$sql->update();
-		return $dao->query($sql);	
+		$ret = $dao->query($sql);
+		if($ret === false)
+		{
+			$this->_log_error();
+			return false;
+		}
+		return $game_user;	
 	}
 	
 	/**
@@ -168,11 +178,17 @@ class GameModule
 		$game = $this->game_infoDAO->load($criteria);
 		if(is_null($game))//没有查到游戏信息，返回false
 		{
-			return false;
+			return Game_result_Params::GAME_NOT_EXIST;
 		}
 		//更新game_info表的游戏结束时间
 		$game->setGame_endtime(Utility::now());
-		return $this->game_infoDAO->update($game);	
+		$ret = $this->game_infoDAO->update($game);	
+		if($ret === false)
+		{
+			$this->_log_error();
+			return false;
+		}
+		return $game;
 	}
 	
 	/**

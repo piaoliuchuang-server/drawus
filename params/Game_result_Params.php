@@ -46,5 +46,19 @@ class Game_result_Params
 	 */
 	const GAME_FINISH_SUCCESS = 'success';
 	
+	/**
+	 * 没有此游戏玩家信息
+	 */
+	const GAME_USER_NOT_EXIST = 'game_user_not_exist';
+	
+	/**
+	 * 玩家已经离开了
+	 */
+	const PLAYER_HAS_LEFT = 'has_left';
+	
+	/**
+	 * 没有此游戏信息
+	 */
+	const GAME_NOT_EXIST = 'game_not_exist';
 }
 ?>
