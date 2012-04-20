@@ -37,7 +37,6 @@ define('DEFAULT_DO', 'mysql_search');
 //===注：为TRUE时，error_reporting()将会失效===
 define('IS_RELEASE', FALSE);
 
-
 /*
  * ==== 游戏参数 ====
  */

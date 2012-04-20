@@ -60,5 +60,10 @@ class Game_result_Params
 	 * 没有此游戏信息
 	 */
 	const GAME_NOT_EXIST = 'game_not_exist';
+	
+	/**
+	 * 
+	 */
+	const SUCCESS = 'success';
 }
 ?>

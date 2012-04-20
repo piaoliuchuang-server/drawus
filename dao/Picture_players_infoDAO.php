@@ -1,5 +1,5 @@
 <?php
-//create-time 2012-4-08 16:31:28
+//create-time 2012-4-20 20:03:10
 class Picture_players_infoDAO extends DAO implements DAOInterface {
 
 	private $table="picture_players_info";
@@ -8,9 +8,8 @@ class Picture_players_infoDAO extends DAO implements DAOInterface {
 		$sql=new SQL($this->table);
 		$sql->add("picture_id",$picture_players_info->getPicture_id());
 		$sql->add("user_id",$picture_players_info->getUser_id());
-		$sql->add("player_position",$picture_players_info->getPlayer_position());
-		$sql->add("guess_status",$picture_players_info->getGuess_status());
-		$sql->add("guess_time",$picture_players_info->getGuess_time());
+		$sql->add("result_status",$picture_players_info->getResult_status());
+		$sql->add("time",$picture_players_info->getTime());
 		$sql->insert();
 		$ret = parent::query($sql);
 		return $ret;
@@ -26,9 +25,8 @@ class Picture_players_infoDAO extends DAO implements DAOInterface {
 		$sql=new SQL($this->table);
 		$sql->criteria=$criteria;
 		$sql->add("user_id",$picture_players_info->getUser_id());
-		$sql->add("player_position",$picture_players_info->getPlayer_position());
-		$sql->add("guess_status",$picture_players_info->getGuess_status());
-		$sql->add("guess_time",$picture_players_info->getGuess_time());
+		$sql->add("result_status",$picture_players_info->getResult_status());
+		$sql->add("time",$picture_players_info->getTime());
 		$sql->update();
 		return parent::query($sql);
 	}
@@ -64,9 +62,8 @@ class Picture_players_infoDAO extends DAO implements DAOInterface {
 			$result=parent::field($rs);
 			$picture_players_info->setPicture_id($result['picture_id']);
 			$picture_players_info->setUser_id($result['user_id']);
-			$picture_players_info->setPlayer_position($result['player_position']);
-			$picture_players_info->setGuess_status($result['guess_status']);
-			$picture_players_info->setGuess_time($result['guess_time']);
+			$picture_players_info->setResult_status($result['result_status']);
+			$picture_players_info->setTime($result['time']);
 			return $picture_players_info;
 		}
 	}

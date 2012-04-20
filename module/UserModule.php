@@ -82,8 +82,7 @@ class UserModule
 		$sql->criteria = $criteria;
 		$sql->select();
 		$user_count = DAO::getCount($sql);
-		if(!$user_count)
-	    	return false;
+
 	    return $user_count;
 	}
 	

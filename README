@@ -16,4 +16,5 @@
 4.请求的url
 http://localhost/drawus/interface/index.php?do=***
 
-
+5.php.ini文件中指定临时目录upload_tmp_dir:drawus/tmp
+  php.ini定义upload_max_filesize值

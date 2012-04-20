@@ -1,5 +1,5 @@
 <?php
-//create-time 2012-4-11 21:58:40
+//create-time 2012-4-20 20:03:10
 class Game_user_info {
 	private $game_id;
 	private $user_id;

@@ -21,8 +21,21 @@ class SearchUserController extends Controller
 
 		if(empty($user_info))//如果客户端第一次玩游戏，则提示创建新用户名
 		{
-			$jsonResult->message = strval(Game_result_Params::GAME_FIRST_TIME);
-			$jsonResult->data = "";
+			//验证注册用户数是否超过上限
+			@date_default_timezone_set('Asia/Shanghai');
+			$starttime = date('Y-m-d', time());
+			$endtime = date("Y-m-d", time()+60*60*24);
+			$new_user_count = $user_module->getUserCountByTime($starttime, $endtime);
+			if($new_user_count >= NEW_USER_MAX_DAILY)
+			{
+				$jsonResult->message = strval(User_result_Params::HAS_REACHED_MAX);
+				$jsonResult->data = "";
+			}
+			else
+			{
+				$jsonResult->message = strval(Game_result_Params::GAME_FIRST_TIME);
+				$jsonResult->data = "";
+			}
 		}
 		else //查找和此用户相关的游戏信息
 		{

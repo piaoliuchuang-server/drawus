@@ -1,5 +1,5 @@
 <?php
-//create-time 2012-4-14 15:50:35
+//create-time 2012-4-20 20:03:10
 class User_infoDAO extends DAO implements DAOInterface {
 
 	private $table="user_info";

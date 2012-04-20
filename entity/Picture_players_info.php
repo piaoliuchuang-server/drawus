@@ -1,11 +1,10 @@
 <?php
-//create-time 2012-4-08 16:31:28
+//create-time 2012-4-20 20:03:10
 class Picture_players_info {
 	private $picture_id;
 	private $user_id;
-	private $player_position;
-	private $guess_status;
-	private $guess_time;
+	private $result_status;
+	private $time;
 	function setPicture_id($picture_id) {
 		$this->picture_id=$picture_id;
 	}
@@ -20,26 +19,19 @@ class Picture_players_info {
 	function getUser_id() {
 		return $this->user_id;
 	}
-	function setPlayer_position($player_position) {
-		$this->player_position=$player_position;
+	function setResult_status($result_status) {
+		$this->result_status=$result_status;
 	}
  
-	function getPlayer_position() {
-		return $this->player_position;
+	function getResult_status() {
+		return $this->result_status;
 	}
-	function setGuess_status($guess_status) {
-		$this->guess_status=$guess_status;
-	}
- 
-	function getGuess_status() {
-		return $this->guess_status;
-	}
-	function setGuess_time($guess_time) {
-		$this->guess_time=$guess_time;
+	function setTime($time) {
+		$this->time=$time;
 	}
  
-	function getGuess_time() {
-		return $this->guess_time;
+	function getTime() {
+		return $this->time;
 	}
 }
 ?>

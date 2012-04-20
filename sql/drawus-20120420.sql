@@ -23,12 +23,9 @@ CREATE TABLE `game_info` (
   `game_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '游戏ID',
   `game_starttime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '游戏开始时间',
   `game_endtime` timestamp NULL DEFAULT NULL COMMENT '游戏结束时间',
+  `current_status` tinyint(4) NOT NULL COMMENT '游戏当前状态',
   PRIMARY KEY (`game_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
-
-/*Data for the table `game_info` */
-
-insert  into `game_info`(`game_id`,`game_starttime`,`game_endtime`) values (6,'2012-04-11 21:41:36',NULL),(7,'2012-04-11 21:42:26',NULL),(8,'2012-04-11 22:00:15',NULL),(9,'2012-04-11 22:07:13',NULL),(10,'2012-04-11 22:18:13',NULL),(11,'2012-04-11 22:19:03',NULL),(12,'2012-04-11 22:19:42',NULL),(13,'2012-04-12 14:50:13',NULL),(14,'2012-04-12 15:32:54',NULL),(15,'2012-04-12 18:26:49',NULL),(16,'2012-04-12 18:27:16',NULL),(17,'2012-04-12 18:34:39',NULL),(18,'2012-04-12 18:36:43',NULL),(19,'2012-04-12 18:37:30',NULL),(20,'2012-04-12 18:39:31',NULL),(21,'2012-04-12 18:39:56',NULL),(22,'2012-04-12 19:16:16',NULL),(23,'2012-04-13 13:49:24',NULL),(24,'2012-04-14 19:03:46',NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 /*Table structure for table `game_user_info` */
 
@@ -37,13 +34,9 @@ DROP TABLE IF EXISTS `game_user_info`;
 CREATE TABLE `game_user_info` (
   `game_id` int(11) NOT NULL COMMENT '游戏ID',
   `user_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '用户ID',
-  `position` varchar(5) CHARACTER SET utf8 NOT NULL COMMENT '身份（draw，guess）',
+  `position` tinyint(4) NOT NULL COMMENT '身份（draw，guess）',
   PRIMARY KEY (`game_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `game_user_info` */
-
-insert  into `game_user_info`(`game_id`,`user_id`,`position`) values (22,'fangxin','guess'),(22,'yutianhang111','draw'),(23,'fangxin','guess'),(23,'xiaoyu','draw'),(24,'fangxin','draw'),(24,'yutianhang','guess');
 
 /*Table structure for table `picture_info` */
 
@@ -58,8 +51,6 @@ CREATE TABLE `picture_info` (
   PRIMARY KEY (`picture_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `picture_info` */
-
 /*Table structure for table `picture_players_info` */
 
 DROP TABLE IF EXISTS `picture_players_info`;
@@ -67,13 +58,10 @@ DROP TABLE IF EXISTS `picture_players_info`;
 CREATE TABLE `picture_players_info` (
   `picture_id` int(11) NOT NULL COMMENT '图画id',
   `user_id` varchar(20) CHARACTER SET utf8 NOT NULL COMMENT '用户id',
-  `player_position` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT '用户身份（画画者还是猜画者）',
-  `guess_status` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT 'doing' COMMENT '用户猜图的状态',
-  `guess_time` time DEFAULT NULL COMMENT '用户猜图时间',
+  `result_status` varchar(10) CHARACTER SET utf8 NOT NULL COMMENT '用户猜图的状态',
+  `time` time DEFAULT NULL COMMENT '猜（画）图时间',
   PRIMARY KEY (`picture_id`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `picture_players_info` */
 
 /*Table structure for table `user_info` */
 
@@ -90,10 +78,6 @@ CREATE TABLE `user_info` (
   KEY `udid` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `user_info` */
-
-insert  into `user_info`(`user_id`,`uuid`,`token`,`password`,`register_time`,`user_score`) values ('fangxin','kathyrani',NULL,'fangxin','2012-04-13 18:23:54',2),('yutianhang','111',NULL,'yutianhang','2012-04-14 19:54:37',2);
-
 /*Table structure for table `words` */
 
 DROP TABLE IF EXISTS `words`;
@@ -104,8 +88,6 @@ CREATE TABLE `words` (
   `word_degree` varchar(10) CHARACTER SET utf8 DEFAULT NULL COMMENT '单词难度',
   PRIMARY KEY (`word`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `words` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

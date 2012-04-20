@@ -9,7 +9,7 @@ class User_result_Params
 	/**
 	 * 没有错误,创建用户成功
 	 */
-	const SUCESS = 'sucess';
+	const SUCCESS = 'success';
 	
 	/**
 	 * 客户端uuid为空

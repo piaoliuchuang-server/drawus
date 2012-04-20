@@ -23,6 +23,7 @@ class GameModule
 	{
 		$game = new Game_info(); 
 		$game->setGame_starttime(Utility::now());
+		$game->setCurrent_status(Game_Params::WAIT_DRAW);
 		$ret = $this->game_infoDAO->save($game);
 		if($ret === false)
 		{
@@ -33,7 +34,7 @@ class GameModule
 		$game_user = new Game_user_info();
 		$game_user->setGame_id($game->getGame_id());
 		$game_user->setUser_id($founder_id);
-		$game_user->setPosition(Game_Params::DRAW);
+		$game_user->setPosition(Position_Params::PAINTER);
 		$ret_founder = $this->game_user_infoDAO->save($game_user);
 		if($ret_founder === false)
 		{
@@ -42,7 +43,7 @@ class GameModule
 		}
 		
 		$game_user->setUser_id($partner_id);
-		$game_user->setPosition(Game_Params::GUESS);
+		$game_user->setPosition(Position_Params::PLAYER);
 		$ret_partner = $this->game_user_infoDAO->save($game_user);
 		if($ret_partner === false)
 		{
@@ -62,7 +63,7 @@ class GameModule
 	{
 		if(count($players) == 2)
 		{
-			$sql = 'select * from game_user_info as t1 where (t1.user_id = \''.$players[0].'\' or t1.user_id = \''.$players[1].'\') and exists (select 1 from game_user_info as t2 where (t2.user_id = \''.$players[0].'\' or t2.user_id = \''.$players[1].'\') and t1.user_id != t2.user_id and t1.game_id = t2.game_id and t1.position <> \''.Game_Params::LEFT.'\' and t2.position <> \''.Game_Params::LEFT.'\')';
+			$sql = 'select * from game_user_info as t1 where (t1.user_id = \''.$players[0].'\' or t1.user_id = \''.$players[1].'\') and exists (select 1 from game_user_info as t2 where (t2.user_id = \''.$players[0].'\' or t2.user_id = \''.$players[1].'\') and t1.user_id != t2.user_id and t1.game_id = t2.game_id and t1.position <> \''.Position_Params::LEFT.'\' and t2.position <> \''.Position_Params::LEFT.'\')';
 			$dao = new DAO();
 			$rs = $dao->query($sql);
 		}
@@ -90,7 +91,7 @@ class GameModule
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('user_id',$user_id));
-		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
+		$criteria->addRestrictions(Restrictions::ne('position',Position_Params::LEFT));
 		$sql=new SQL("game_user_info");
 		$sql->criteria=$criteria;
 		$sql->select();
@@ -103,6 +104,7 @@ class GameModule
 			for($i=0; $i < $num_rs; $i++)
 			{
 				$row = @mysql_fetch_assoc($rs);
+
 				//根据game_id查找游戏玩家信息(game_user_info)
 				$gu_rs = $this->searchGameUserByGameid($row['game_id']);
 				$partner = array();
@@ -117,9 +119,14 @@ class GameModule
 					}
 				}
 				
+				//根据game_id查找Game_info表中的当前游戏状态
+				$game_info = $this->searchGameStatusByGameid($row['game_id']);
+				$game_status=@mysql_fetch_assoc($game_info);
+				
 				$gameinfo[] = array(
 					'game_id' => stripcslashes($row['game_id']),
 					'position' => stripcslashes($row['position']),
+					'status' => $game_status['current_status'],
 					'partner' => $partner,
 				);
 			}
@@ -148,12 +155,12 @@ class GameModule
 		{
 			return Game_result_Params::GAME_USER_NOT_EXIST;
 		}
-		else if($game_user->getPosition() == Game_Params::LEFT)
+		else if($game_user->getPosition() == Position_Params::LEFT)
 		{
 			return Game_result_Params::PLAYER_HAS_LEFT;
 		}
 		//更新game_user_info表对应的position为left
-		$game_user->setPosition(Game_Params::LEFT);
+		$game_user->setPosition(Position_Params::LEFT);
 		$sql=new SQL("game_user_info");
 		$dao = new DAO();
 		$sql->criteria=$criteria;
@@ -182,6 +189,7 @@ class GameModule
 		}
 		//更新game_info表的游戏结束时间
 		$game->setGame_endtime(Utility::now());
+		$game->setCurrent_status(Game_Params::END);
 		$ret = $this->game_infoDAO->update($game);	
 		if($ret === false)
 		{
@@ -192,7 +200,7 @@ class GameModule
 	}
 	
 	/**
-	 * 根据game_id查找正在玩游戏的玩家信息
+	 * 根据game_id查找game_user_info表中正在玩游戏的玩家信息
 	 * 
 	 * @param $game_id
 	 * @return $rs;
@@ -201,9 +209,27 @@ class GameModule
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
-		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
+		$criteria->addRestrictions(Restrictions::ne('position',Position_Params::LEFT));
 		$sql=new SQL("game_user_info");
 		$sql->criteria=$criteria;
+		$sql->select();
+		$dao = new DAO();
+		$rs = $dao->query($sql);
+		return $rs;
+	}
+	
+	/**
+	 * 根据game_id查找Game_info表中的当前游戏
+	 * 
+	 * @param $game_id
+	 * @return $rs
+	 */
+	function searchGameStatusByGameid($game_id)
+	{
+		$criteria = new Criteria();
+		$criteria->addRestrictions(Restrictions::eq('game_id', $game_id));
+		$sql = new SQL("game_info");
+		$sql->criteria = $criteria;
 		$sql->select();
 		$dao = new DAO();
 		$rs = $dao->query($sql);
@@ -219,7 +245,7 @@ class GameModule
 	{
 		$criteria = new Criteria();
 		$criteria->addRestrictions(Restrictions::eq('game_id',$game_id));
-		$criteria->addRestrictions(Restrictions::ne('position',Game_Params::LEFT));
+		$criteria->addRestrictions(Restrictions::ne('position',Position_Params::LEFT));
 		$sql = new SQL('game_user_info');
 		$sql->criteria = $criteria;
 		$sql->select();

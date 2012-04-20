@@ -13,18 +13,6 @@ class AddUserController extends Controller
 	{
 		$user_module = new UserModule();
 		
-		//验证注册用户数是否超过上限
-		@date_default_timezone_set('Asia/Shanghai');
-		$starttime = date('Y-m-d', time());
-		$endtime = date("Y-m-d", time()+60*60*24);
-		$new_user_count = $user_module->getUserCountByTime($starttime, $endtime);
-		if($new_user_count > NEW_USER_MAX_DAILY)
-		{
-			$this->_addErrorCode(User_result_Params::HAS_REACHED_MAX);
-			$this->AddUserResultHandle(false);
-			return false;
-		}
-		
 		//用户名非空验证和格式验证
 		$user_id = $_POST[User_http_Params::USER_ID];
 		$password = $_POST[User_http_Params::USER_PWD];
@@ -109,7 +97,7 @@ class AddUserController extends Controller
 		}
 		else 
 		{
-			$jsonResult->message = strval(User_result_Params::SUCESS);
+			$jsonResult->message = strval(User_result_Params::SUCCESS);
 			$jsonResult->data = '';
 		}
 		echo json_encode($jsonResult);

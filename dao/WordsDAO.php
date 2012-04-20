@@ -1,5 +1,5 @@
 <?php
-//create-time 2012-4-08 16:31:28
+//create-time 2012-4-20 20:03:10
 class WordsDAO extends DAO implements DAOInterface {
 
 	private $table="words";

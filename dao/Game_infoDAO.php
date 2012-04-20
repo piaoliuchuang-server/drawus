@@ -1,5 +1,5 @@
 <?php
-//create-time 2012-4-08 16:31:27
+//create-time 2012-4-20 20:03:09
 class Game_infoDAO extends DAO implements DAOInterface {
 
 	private $table="game_info";
@@ -8,6 +8,7 @@ class Game_infoDAO extends DAO implements DAOInterface {
 		$sql=new SQL($this->table);
 		$sql->add("game_starttime",$game_info->getGame_starttime());
 		$sql->add("game_endtime",$game_info->getGame_endtime());
+		$sql->add("current_status",$game_info->getCurrent_status());
 		$sql->insert();
 		$ret = parent::query($sql);
 		$game_info->setGame_id(parent::lastId());
@@ -25,6 +26,7 @@ class Game_infoDAO extends DAO implements DAOInterface {
 		$sql->criteria=$criteria;
 		$sql->add("game_starttime",$game_info->getGame_starttime());
 		$sql->add("game_endtime",$game_info->getGame_endtime());
+		$sql->add("current_status",$game_info->getCurrent_status());
 		$sql->update();
 		return parent::query($sql);
 	}
@@ -61,6 +63,7 @@ class Game_infoDAO extends DAO implements DAOInterface {
 			$game_info->setGame_id($result['game_id']);
 			$game_info->setGame_starttime($result['game_starttime']);
 			$game_info->setGame_endtime($result['game_endtime']);
+			$game_info->setCurrent_status($result['current_status']);
 			return $game_info;
 		}
 	}

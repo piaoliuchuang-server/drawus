@@ -46,5 +46,39 @@
 	    <br/>
 		<input type="submit" name="submit" value="submit">
 	</form>
+	
+	<h5><span style="color:#F03">====用户要画，则请求单词====</span></h5>
+	<form action="../interface/index.php?do=game_word" method="post">
+		<input type="submit" name="submit" value="submit">
+	</form>
+	
+	<h5><span style="color:#F03">====用户完成一次“画”的动作do=game_draw====</span></h5>
+	<form action="../interface/index.php?do=game_draw" method="post">
+		游戏id：<input name="game_id" type="text" size="40"/>
+		<br/>
+	    word:<input name="word" type="text" size="40"/>
+	    <br/>
+	   	作者：<input name="author " type="text" size="40"/>
+		<br/>
+	  	  画图时间<input name="draw_time" type="text" size="40"/>
+	  	 <br/>
+		<input type="submit" name="submit" value="submit">
+	</form>
+	
+	<h5><span style="color:#F03">====用户完成一次“猜”的动作do=game_guess====</span></h5>
+	<form action="../interface/index.php?do=game_guess" method="post">
+		游戏id：<input name="user_id_finish" type="text" size="40"/>
+		<br/>
+	    :<input name="game_id_finish" type="text" size="40"/>
+	    <br/>
+		<input type="submit" name="submit" value="submit">
+	</form>
+	
+	<h5><span style="color:#F03">====文件上传do=game_guess====</span></h5>
+	<form action="../interface/index.php?do=picture_upload" method="post" enctype="multipart/form-data">
+		上传文件：<input name="picfile" type="file" size="40"/>
+		<br/>
+		<input type="submit" name="submit" value="upload">
+	</form>
 </body>
 </html>

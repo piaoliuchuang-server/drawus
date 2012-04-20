@@ -1,9 +1,10 @@
 <?php
-//create-time 2012-4-08 16:31:28
+//create-time 2012-4-20 20:03:10
 class Game_info {
 	private $game_id;
 	private $game_starttime;
 	private $game_endtime;
+	private $current_status;
 	function setGame_id($game_id) {
 		$this->game_id=$game_id;
 	}
@@ -24,6 +25,13 @@ class Game_info {
  
 	function getGame_endtime() {
 		return $this->game_endtime;
+	}
+	function setCurrent_status($current_status) {
+		$this->current_status=$current_status;
+	}
+ 
+	function getCurrent_status() {
+		return $this->current_status;
 	}
 }
 ?>

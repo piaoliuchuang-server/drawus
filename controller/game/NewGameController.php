@@ -11,6 +11,8 @@ class NewGameController extends Controller
 	
 	function run()
 	{
+		declare_enum_consts('GENDER'); 
+		return false;
 		$founder_id = $_POST[Game_http_Params::GAME_FOUNDER];
 		$partner_id = $_POST[Game_http_Params::GAME_PARTNER];
 		$user_module = new UserModule();
